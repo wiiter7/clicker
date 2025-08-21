@@ -1,1 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biscoito Clicker</title>
+    <style>
+        /* CSS para estilizar o jogo */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0e2d0;
+            color: #4a2c0f;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            user-select: none; /* Impede que o texto seja selecionado ao clicar rápido */
+        }
 
+        #game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #fffaf0;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 500px;
+        }
+
+        h1 {
+            margin-top: 0;
+            color: #8b4513;
+        }
+
+        #score-container {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        #clicker-container img {
+            width: 200px;
+            cursor: pointer;
+            transition: transform 0.1s ease;
+        }
+
+        #clicker-container img:active {
+            transform: scale(0.9); /* Efeito de clique */
+        }
+
+        #upgrades-container {
+            margin-top: 30px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .upgrade-btn {
+            padding: 15px;
+            font-size: 1em;
+            background-color: #d2691e;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border-bottom: 4px solid #8b4513;
+        }
+
+        .upgrade-btn:hover {
+            background-color: #cd853f;
+        }
+
+        .upgrade-btn:disabled {
+            background-color: #ccc;
+            color: #666;
+            cursor: not-allowed;
+            border-bottom-color: #999;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="game-container">
+        <h1>Biscoito Clicker</h1>
+        
+        <div id="score-container">
+            🍪 <span id="score">0</span> Biscoitos
+        </div>
+        
+        <div id="clicker-container">
+            <img src="https://pngimg.com/uploads/cookie/cookie_PNG13656.png" alt="Biscoito para clicar" id="cookie-btn">
+        </div>
+        
+        <div id="upgrades-container">
+            <h2>Upgrades</h2>
+            <button class="upgrade-btn" id="upgrade-click-btn">
+                Super Clique (Nível 1) - Custo: 20 Biscoitos
+            </button>
+            <button class="upgrade-btn" id="upgrade-helper-btn">
+                Contratar Ajudante (0) - Custo: 50 Biscoitos
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // --- VARIÁVEIS DO JOGO ---
+        let score = 0;
+        let clickPower = 1;
+        let clickUpgradeCost = 20;
+        let clickUpgradeLevel = 1;
+
+        let helpers = 0;
+        let helperCost = 50;
+        let helperPower = 1; // Cada ajudante gera 1 biscoito por segundo
+
+        // --- ACESSANDO ELEMENTOS DO HTML ---
+        const scoreDisplay = document.getElementById('score');
+        const cookieBtn = document.getElementById('cookie-btn');
+        const upgradeClickBtn = document.getElementById('upgrade-click-btn');
+        const upgradeHelperBtn = document.getElementById('upgrade-helper-btn');
+
+        // --- FUNÇÕES DO JOGO ---
+
+        // Função para atualizar todos os textos na tela
+        function updateDisplay() {
+            scoreDisplay.textContent = Math.floor(score); // Usamos Math.floor para mostrar números inteiros
